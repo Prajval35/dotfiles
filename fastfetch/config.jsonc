@@ -1,0 +1,109 @@
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
+
+
+    "logo": {
+    	"source": "arch_small",
+    	"height": 10,
+    	"padding": {
+    		"top": 1,
+    		"left": 2,
+    		"bottom": 1,
+    		"right": 2,
+    	}
+  },
+  "display": {
+    "separator": "\u001b[0m\u001b[38;2;235;219;178m: ",
+    "color": {
+      "output": "38;2;235;219;178"
+    }
+  },
+  "modules": [
+    {
+      "type": "custom",
+      "format": "\u001b[1m\u001b[33m┌─── System Info"
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[33m├  User",
+      "text": "echo -e \"\u001b[35m$USER\u001b[38;2;235;219;178m@\u001b[35m$HOSTNAME\""
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[33m├ 󱑑 OS Age",
+      "text": "birth_install=$(stat -c %W /); current=$(date +%s); time_progression=$((current - birth_install)); days_difference=$((time_progression / 86400)); echo -e \"\u001b[38;2;235;219;178m$days_difference days\""
+    },
+    {
+      "type": "uptime",
+      "key": "\u001b[1m\u001b[33m├ 󰅶 Uptime"
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[33m└ 󰃭 Date/Time",
+      "text": "echo -ne \"\u001b[38;2;235;219;178m\"; date '+%m-%d - %I:%M %p'"
+    },
+    {
+      "type": "custom",
+      "format": "\u001b[1m\u001b[32m┌─── Software"
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[32m├  Kernel",
+      "text": "v=$(uname -r); main=$(echo $v | cut -d'-' -f1,2); extra=$(echo $v | cut -d'-' -f3-); echo -e \"\u001b[37m$main\u001b[38;2;235;219;178m-$extra\""
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[32m├  Desktop",
+      "text": "uwsm_v=$(uwsm --version 2>/dev/null | awk '{print $2}'); hypr_v=$(hyprctl version | grep 'Tag:' | awk '{print $2}' | sed 's/,//g'); if [ -n \"$uwsm_v\" ]; then echo -e \"\u001b[38;2;235;219;178muwsm \u001b[37m$uwsm_v\u001b[38;2;235;219;178m Hyprland \u001b[37m$hypr_v\u001b[38;2;235;219;178m\"; else echo -e \"\u001b[38;2;235;219;178mHyprland \u001b[37m$hypr_v\u001b[38;2;235;219;178m\"; fi"
+    },
+    {
+      "type": "packages",
+      "key": "\u001b[1m\u001b[32m├  Packages",
+      "format": "{1} \u001b[38;2;235;219;178mpkgs"
+    },
+    {
+      "type": "shell",
+      "key": "\u001b[1m\u001b[32m├  Shell",
+      "format": "\u001b[38;2;235;219;178mzsh \u001b[37m{4}"
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[32m├ 󰍹 Terminal",
+      "text": "if [ -n \"$TMUX\" ]; then tmux_ver=$(tmux -V | cut -d' ' -f2); client=$(tmux display-message -p '#{client_termname}'); if [[ \"$client\" == *foot* ]] || [[ \"$client\" == \"xterm-256color\" ]]; then term=\"foot \u001b[37m$(foot --version | cut -d' ' -f3)\u001b[38;2;235;219;178m\"; elif [[ \"$client\" == *kitty* ]]; then term=\"kitty \u001b[37m$(kitty --version | cut -d' ' -f2)\u001b[38;2;235;219;178m\"; else term=\"$client\"; fi; echo -e \"\u001b[38;2;235;219;178mtmux \u001b[37m$tmux_ver\u001b[38;2;235;219;178m - $term\"; else if [ -n \"$FOOT_PID\" ] || [[ \"$TERM\" == *foot* ]]; then echo -e \"\u001b[38;2;235;219;178mfoot \u001b[37m$(foot --version | cut -d' ' -f3)\u001b[38;2;235;219;178m\"; elif [ -n \"$KITTY_PID\" ] || [[ \"$TERM\" == *kitty* ]]; then echo -e \"\u001b[38;2;235;219;178mkitty \u001b[37m$(kitty --version | cut -d' ' -f2)\u001b[38;2;235;219;178m\"; else echo -e \"\u001b[38;2;235;219;178m$TERM\"; fi; fi"
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[32m└ 󰯄 WireGuard",
+      "text": "if ip link show wg0 > /dev/null 2>&1; then echo -e '\u001b[36mEnabled'; else echo -e '\u001b[91mDisabled'; fi"
+    },
+    {
+      "type": "custom",
+      "format": "\u001b[1m\u001b[34m┌─── Hardware"
+    },
+    {
+      "type": "battery",
+      "key": "\u001b[1m\u001b[34m├ 󰁹 Battery",
+      "format": "{4} {5}"
+    },
+    {
+      "type": "command",
+      "key": " ",
+      "text": "for d in nvme1n1 nvme0n1 sda; do if [ -b /dev/$d ]; then if [ \"$d\" = \"sda\" ]; then I=\"󱊟\"; else I=\"\"; fi; U=$(lsblk -n -o FSUSED --bytes /dev/$d | awk '{s+=$1} END {print s+0}'); S=$(lsblk -dn -o SIZE --bytes /dev/$d | awk '{print $1}'); if [ \"$S\" -gt 0 ]; then pct=$((U * 100 / S)); else pct=0; fi; U_fmt=$(numfmt --to=iec $U | sed -E 's/([A-Z])/\u001b[37m\\1\u001b[38;2;235;219;178m/'); S_fmt=$(numfmt --to=iec $S | sed -E 's/([A-Z])/\u001b[37m\\1\u001b[38;2;235;219;178m/'); printf \"\\033[34m├ $I \\033[1m%s\\033[0m\\033[38;2;235;219;178m: %s / %s (\\033[94m%s%%\\033[38;2;235;219;178m)\\n\" \"$d\" \"$U_fmt\" \"$S_fmt\" \"$pct\"; fi; done"
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[34m├ 󰍛 RAM",
+      "text": "mem=$(free -b | grep Mem); total=$(echo \"$mem\" | awk '{print $2}'); used=$(echo \"$mem\" | awk '{print $3}'); pct=$((used * 100 / total)); echo \"$(numfmt --to=iec $used | sed -E 's/([A-Z])/\u001b[37m\\1\u001b[38;2;235;219;178m/') / $(numfmt --to=iec $total | sed -E 's/([A-Z])/\u001b[37m\\1\u001b[38;2;235;219;178m/') (\u001b[94m${pct}%\u001b[38;2;235;219;178m)\""
+    },
+    {
+      "type": "command",
+      "key": "\u001b[1m\u001b[34m└ 󰯍 Swap",
+      "text": "swp=$(free -b | grep Swap); total=$(echo \"$swp\" | awk '{print $2}'); used=$(echo \"$swp\" | awk '{print $3}'); if [ \"$total\" -gt 0 ]; then pct=$((used * 100 / total)); else pct=0; fi; echo \"$(numfmt --to=iec $used | sed -E 's/([A-Z])/\u001b[37m\\1\u001b[38;2;235;219;178m/') / $(numfmt --to=iec $total | sed -E 's/([A-Z])/\u001b[37m\\1\u001b[38;2;235;219;178m/') (\u001b[94m${pct}%\u001b[38;2;235;219;178m)\""
+    },
+    {
+      "type": "command",
+      "key": " ",
+      "text": "printf \"          \\e[93m󰮯 \\e[97m󰇘 󰇘 󰇘 󰇘 \\e[37m󰊠 \\e[91m󰊠 \\e[92m󰊠 \\e[96m󰊠 \\e[34m󰊠 \\e[95m󰊠 \\e[38;2;40;40;40m󰊠\\n\""
+    }
+  ]
+}

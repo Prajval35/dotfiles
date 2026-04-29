@@ -1,0 +1,61 @@
+@import "colors.rasi"
+
+* {
+    font: "JetBrainsMono Nerd Font 11";
+}
+
+/* Window */
+window {
+    location: center;
+    anchor: center;
+    width: 600px;
+
+    background-color: @surface;
+    border: 2px;
+    border-color: @outline;
+    border-radius: 12px;
+}
+
+/* Main box */
+mainbox {
+    background-color: transparent;
+    padding: 10px;
+}
+
+/* Input bar */
+inputbar {
+    background-color: @surface-container;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 10px;
+}
+
+entry {
+    text-color: @on-surface;
+}
+
+/* List */
+listview {
+    background-color: transparent;
+    spacing: 6px;
+}
+
+/* Normal items */
+element {
+    padding: 8px;
+    border-radius: 8px;
+    background-color: @surface-container;
+    text-color: @on-surface;
+}
+
+/* Selected item */
+element selected {
+    background-color: @primary;
+    text-color: @on-primary;
+}
+
+/* Urgent */
+element urgent {
+    background-color: @error;
+    text-color: @on-error;
+}
