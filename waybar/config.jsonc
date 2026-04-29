@@ -1,0 +1,31 @@
+/* ---- 💫 https://github.com/JaKooLit 💫 ---- */
+
+/* My Mostly Used waybar config incase you wonder :) */
+{
+"include": [
+  "$HOME/.config/waybar/Modules",
+  "$HOME/.config/waybar/ModulesWorkspaces",
+  "$HOME/.config/waybar/ModulesCustom",
+  "$HOME/.config/waybar/ModulesGroups",
+  "$HOME/.config/waybar/UserModules",
+  ],
+"layer": "overlay",
+"mode": "dock",
+"exclusive": true,
+"passthrough": true,
+"position": "bottom",
+"spacing": 3,
+"fixed-center": true,
+"ipc": true,
+"margin-top": 3,
+"margin-left": 8,
+"margin-right": 8,
+
+"modules-center": [
+	"group/app_drawer",
+	"custom/separator#dot",
+	"hyprland/workspaces#pacman",
+	"custom/separator#dot",
+	"group/notify",	
+	],
+}
