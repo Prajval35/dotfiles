@@ -1,0 +1,53 @@
+;; ---- Variables polling playerctl ----
+
+(deflisten spotify-status
+  :initial "Paused"
+  "playerctl --player=spotify status 2>/dev/null || echo 'Stopped'")
+
+(deflisten spotify-title
+  :initial ""
+  "playerctl --player=spotify metadata title 2>/dev/null")
+
+(deflisten spotify-artist
+  :initial ""
+  "playerctl --player=spotify metadata artist 2>/dev/null")
+
+(deflisten spotify-art
+  :initial ""
+  "playerctl --player=spotify metadata mpris:artUrl 2>/dev/null")
+
+;; ---- Widget ----
+
+(defwidget now-playing []
+  (box :class "now-playing"
+       :orientation "h"
+       :space-evenly false
+       :spacing 12
+    (box :class "art-box"
+      (image :path {spotify-art != "" ? "/tmp/spotify-art.jpg" : ""}
+             :image-width 60
+             :image-height 60
+             :class "album-art"))
+    (box :orientation "v" :space-evenly false :spacing 4
+      (label :class "track-title"
+             :limit-width 28
+             :text {spotify-title == "" ? "Nothing playing" : spotify-title})
+      (label :class "track-artist"
+             :limit-width 28
+             :text {spotify-artist})
+      (box :orientation "h" :spacing 8 :halign "start"
+        (button :class "ctrl-btn" :onclick "playerctl --player=spotify previous" "⏮")
+        (button :class "ctrl-btn" :onclick "playerctl --player=spotify play-pause"
+                {spotify-status == "Playing" ? "⏸" : "▶"})
+        (button :class "ctrl-btn" :onclick "playerctl --player=spotify next" "⏭")))))
+
+(defwindow now-playing-window
+  :monitor 0
+  :geometry (geometry :x "20px"
+                       :y "20px"
+                       :width "320px"
+                       :height "80px"
+                       :anchor "bottom right")
+  :stacking "fg"
+  :reserve (struts :distance "0px" :side "bottom")
+  (now-playing))
